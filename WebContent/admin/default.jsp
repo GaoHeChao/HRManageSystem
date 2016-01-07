@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% String path = request.getContextPath();%>
 <html>
 	<head>
 		<title>首页</title>
@@ -9,8 +10,6 @@
 
 	<body>
 		<!-- 页面头部 -->
-		
-
 
 <table width="950" border="0" align="center" cellpadding="0"
 	cellspacing="0">
@@ -22,11 +21,11 @@
 	</tr>
 	<tr>
 		<td height="24" align="right" bgcolor="#FFFFFF">
-			<a href="default.jsp.html">首页</a>
-			<a href="DeptViewServlet.html">部门查询</a>
-			<a href="JobsViewServlet.html">职务查询</a>
-			<a href="EmpViewServlet.html">员工查询</a>			
-			<a href="logout.jsp.html">退出登陆</a>		</td>
+			<a href="default.jsp">首页</a>
+			<a href="<%=path%>/QueryDeptServlet">部门查询</a>
+			<a href="JobsViewServlet.jsp">职务查询</a>
+			<a href="EmpViewServlet.jsp">员工查询</a>			
+			<a href="logout.jsp.jsp">退出登陆</a>		</td>
 	</tr>
 	<tr>
 		<td height="24" align="right" bgcolor="#0099CC">

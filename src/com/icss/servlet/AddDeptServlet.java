@@ -1,6 +1,8 @@
 package com.icss.servlet;
 
 import java.io.IOException;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,17 +25,34 @@ public class AddDeptServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		ServletContext servletContext = this.getServletContext();
+		String encode = servletContext.getInitParameter("encoding");
+		
+		request.setCharacterEncoding(encode);
+		response.setContentType("text/html;charset=utf-8");
+		
 		String dnums = request.getParameter("department_id");
 		int dnum = Integer.parseInt(dnums);
 		String dname = request.getParameter("department_name");
 		String dloc = request.getParameter("location_name");
-		System.out.println(dnum +"\t"+ dname +"\t"+ dloc);
+		
 		DepartmentsBean dBean = new DepartmentsBean(dnum,dname,dloc);
+		String path = "admin/AddDept.jsp";
+		String msg = "添加成功！";
 		try {
-			dao.addDept(dBean);
+			int rows = dao.addDept(dBean);
+			if(rows>0){
+				path = "login.jsp";     //成功转向
+			}else{
+				msg = "添加失败！";	
+			}
 		} catch (Exception e) {
+			msg = "添加失败！";	
 			e.printStackTrace();
 		}
+		request.setAttribute("message", msg);
+		request.getRequestDispatcher(path)
+		.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
