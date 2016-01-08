@@ -1,9 +1,12 @@
+<%@ page import="java.beans.beancontext.BeanContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% String path = request.getContextPath(); %>
+<%@ page import="com.icss.bean.DepartmentsBean" %>
 <html>
 	<head>
 		<title>更新部门数据</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path%>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	</head>
 
@@ -12,11 +15,15 @@
 		<table width="950" border="0" align="center" cellpadding="0"
 	cellspacing="0">
           <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="../img/bannal.jpg" width="950"
+            <td height="80" bgcolor="#FFFFFF"><img src="<%=path%>/img/bannal.jpg" width="950"
 				height="80"> </td>
           </tr>
           <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> <a href="DeptViewServlet.html">部门查询</a> <a href="JobsViewServlet.html">职务查询</a> <a href="EmpViewServlet.html">员工查询</a> <a href="logout.jsp.html">退出登陆</a> </td>
+            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> 
+            <a href="<%=path%>/QueryDeptServlet">部门查询</a> 
+            <a href="JobsViewServlet.jsp">职务查询</a> 
+            <a href="EmpViewServlet.jsp">员工查询</a> 
+            <a href="logout.jsp">退出登陆</a> </td>
           </tr>
           <tr>
             <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
@@ -30,9 +37,13 @@
 			<tr>
 				<td align="center" valign="top">
 
-					<form name="form1" method="post" action="">
+					<form name="form1" method="post" action="" id="form1" onsubmit="checkForm()">
 						<table width="500" border="0" cellpadding="5" cellspacing="1"
 							bgcolor="#CCCCCC">
+							<%
+							DepartmentsBean bean = (DepartmentsBean) request.getAttribute("idBean");
+							
+							%>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFCC00">
 									修改部门信息
@@ -44,8 +55,7 @@
 								</td>
 								<td width="357" height="24" bgcolor="#FFFFFF">
 									<input name="department_id" type="text" id="department_id"
-										readonly="readonly"
-										value="10">
+									readonly="readonly" value="<%=bean.getDepartment_id() %>">
 									*
 								</td>
 							</tr>
@@ -54,9 +64,10 @@
 									部门名称
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									<input name="department_name" type="text" id="department_name"
-										value="办公室">
+									<input name="department_name" type="text" id="department_name" onblur="return checkDepName()"
+									value="<%=bean.getDepartment_name() %>">
 									*
+									<span id="depts"></span>
 								</td>
 							</tr>
 							<tr>
@@ -64,16 +75,16 @@
 									部门地址
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									<input name="location_name" type="text" id="location_name"
-										value="22楼">
+									<input name="location_name" type="text" id="location_name" onblur="return checkLoc()"
+									value="<%= bean.getLocation_name() %>">
 									*
+									<span id="locts"></span>
 								</td>
 							</tr>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFFFFF">
-									<input type="button" name="Submit" value="更新" onClick="alert('更新部门数据成功');location.href='DeptViewServlet.html'">
-									<input type="button" name="Submit2" value="取消"
-										onclick="history.back();">
+									<input type="submit" name="Submit" value="更新" >
+									<input type="button" name="Submit2" value="取消" onclick="history.back();">
 								</td>
 							</tr>
 						</table>
@@ -84,6 +95,46 @@
 		</table>
 
 		<!-- 页面底部 -->
+		<!-- 验证修改后的表单 -->
+<script type="text/javascript">
+    function checkForm(){
+    	if(!checkDepName()){
+    		return false;
+    	}else if(!checkLoc()){
+    		return false;
+    	}else{
+	   		var formId = document.getElementById("form1");
+	   		formId.action = "<%=request.getContextPath()%>/UpdateDeptServlet";
+	   		return true;
+    	}
+    }
+    function checkDepName(){
+    	var dep_name = document.getElementById("department_name").value;
+    	var depts = document.getElementById("depts");
+    	if(dep_name == null || dep_name == ""){
+    		depts.innerHTML = "部门名称不能为空！";
+    		depts.style.color = "red";
+    		return false;
+    	}else{
+    		depts.innerHTML = "部门名称输入正确！";
+    		depts.style.color = "green";
+    		return true;
+    	}
+    }
+    function checkLoc(){
+    	var loc_name = document.getElementById("location_name").value;
+    	var locts = document.getElementById("locts");
+    	if(loc_name == null || loc_name == ""){
+    		locts.innerHTML = "部门位置不能为空！";
+    		locts.style.color = "red";
+    		return false;
+    	}else{
+    		locts.innerHTML = "输入正确！";
+    		locts.style.color = "green";
+    		return true;
+    	}
+    }
+</script>
 		
 <table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
   <tr>

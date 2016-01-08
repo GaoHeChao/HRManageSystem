@@ -1,6 +1,7 @@
 package com.icss.servlet;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,50 +14,49 @@ import com.icss.bean.DepartmentsBean;
 import com.icss.dao.DepartmentsDao;
 import com.icss.dao.DepartmentsFactory;
 
-@WebServlet("/AddDeptServlet")
-public class AddDeptServlet extends HttpServlet {
+@WebServlet("/QueryDeptByIdServlet")
+public class QueryDeptByIdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DepartmentsDao dao = DepartmentsFactory.getInstance();    //工厂模式
 
-    public AddDeptServlet() {
+    public QueryDeptByIdServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
+
 		ServletContext servletContext = this.getServletContext();
 		String encode = servletContext.getInitParameter("encoding");
 		
 		request.setCharacterEncoding(encode);
 		response.setContentType("text/html;charset=utf-8");
+		DepartmentsDao dao = DepartmentsFactory.getInstance();
+		String dept_id = request.getParameter("dept_id");
+		int id = Integer.parseInt(dept_id);
+
+		DepartmentsBean bean = new DepartmentsBean();
 		
-		String dnums = request.getParameter("department_id");
-		int dnum = Integer.parseInt(dnums);
-		String dname = request.getParameter("department_name");
-		String dloc = request.getParameter("location_name");
-		
-		DepartmentsBean dBean = new DepartmentsBean(dnum,dname,dloc);
-		String path = "admin/AddDept.jsp";
-		String msg = "添加成功！";
 		try {
-			int rows = dao.addDept(dBean);
-			if(rows>0){
-				path = "QueryDeptServlet";     //成功转向
-			}else{
-				msg = "添加失败！";	
+			ResultSet rs = rs = dao.queryDepById(id);
+			while(rs.next()){
+				bean.setDepartment_id(rs.getInt(1));
+				bean.setDepartment_name(rs.getString(2));
+				bean.setLocation_name(rs.getString(3));
 			}
+			
 		} catch (Exception e) {
-			msg = "添加失败！";	
 			e.printStackTrace();
 		}
-		request.setAttribute("message", msg);
-		request.getRequestDispatcher(path)
+		
+		request.setAttribute("idBean", bean);
+		request.getRequestDispatcher("admin/UpdateDept.jsp")
 		.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

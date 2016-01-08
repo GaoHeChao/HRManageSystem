@@ -9,50 +9,46 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.icss.bean.DepartmentsBean;
 import com.icss.dao.DepartmentsDao;
 import com.icss.dao.DepartmentsFactory;
 
-@WebServlet("/AddDeptServlet")
-public class AddDeptServlet extends HttpServlet {
+@WebServlet("/DelDeptServlet")
+public class DelDeptServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DepartmentsDao dao = DepartmentsFactory.getInstance();    //工厂模式
 
-    public AddDeptServlet() {
+    public DelDeptServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
 		ServletContext servletContext = this.getServletContext();
 		String encode = servletContext.getInitParameter("encoding");
 		
 		request.setCharacterEncoding(encode);
 		response.setContentType("text/html;charset=utf-8");
 		
-		String dnums = request.getParameter("department_id");
-		int dnum = Integer.parseInt(dnums);
-		String dname = request.getParameter("department_name");
-		String dloc = request.getParameter("location_name");
+		String dept_id = request.getParameter("dept_id");
+		int id = Integer.parseInt(dept_id);
+		DepartmentsDao dao = DepartmentsFactory.getInstance();
 		
-		DepartmentsBean dBean = new DepartmentsBean(dnum,dname,dloc);
-		String path = "admin/AddDept.jsp";
-		String msg = "添加成功！";
+		String path = "QueryDeptServlet";
+		String msg = "删除成功！";
 		try {
-			int rows = dao.addDept(dBean);
-			if(rows>0){
-				path = "QueryDeptServlet";     //成功转向
+			int row = dao.delDept(id);
+			if(row>0){
+				
 			}else{
-				msg = "添加失败！";	
+				msg = "删除失败！";
 			}
 		} catch (Exception e) {
-			msg = "添加失败！";	
 			e.printStackTrace();
 		}
-		request.setAttribute("message", msg);
+		request.setAttribute("mesDept", msg);
+		
 		request.getRequestDispatcher(path)
 		.forward(request, response);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 

@@ -21,9 +21,15 @@
 								
 				//如果单击确定，则执行DelDeptServlet，并且传入部门编号
 				if (flag) {
-					alert("删除成功");
-					location.href = "DeptViewServlet.jsp";
+					location.href = "DelDeptServlet?dept_id=" + department_id;  //URL传参
 				}
+				//解决延迟问题，判断是否成功失败
+				alert("<%=request.getAttribute("mesDept")%>");   
+			}
+			
+			function upd(department_id) {
+				location.href = "QueryDeptByIdServlet?dept_id=" + department_id;  //URL传参
+				
 			}
 		</script>
 
@@ -91,8 +97,8 @@
 									<%=bean.getLocation_name() %>
 								</td>
 								<td bgcolor="#FFFFFF">
-									<a href="UpdateDept.jsp">修改</a>
-									<a href="javascript:del(10)">删除</a>								</td>
+									<a href="javascript:upd(<%=bean.getDepartment_id() %>)">修改</a>
+									<a href="javascript:del(<%=bean.getDepartment_id() %>)">删除</a>								</td>
 							</tr>
 						<% } %>
 						<!-- 循环输出部门记录结束 -->

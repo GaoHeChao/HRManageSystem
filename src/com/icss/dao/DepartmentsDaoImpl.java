@@ -25,14 +25,26 @@ public class DepartmentsDaoImpl extends BaseDao implements DepartmentsDao{
 				;
 		return executeUpdate(sql.toString(), id);
 	}
+
+	@Override
+	public ResultSet queryDepById(int id) throws Exception {
+		StringBuilder sql = new StringBuilder()
+				.append(" SELECT department_id,department_name,location_name ")
+				.append("  from departments ")
+				.append("  where department_id=?  ")
+				;
+
+		return executeQuery(sql.toString(),id);
+	}
 	
-	public int updDept(int id) throws Exception{
+	public int updDept(DepartmentsBean dBean) throws Exception{
 		StringBuilder sql = new StringBuilder()
 				.append(" update departments  ")
-				.append(" set department_name='santi'  ")
+				.append(" set department_name=?,location_name=?  ")
 				.append(" where department_id=? ")
 				;
-		return executeUpdate(sql.toString(), id);
+		return executeUpdate(sql.toString(), dBean.getDepartment_name(),
+				dBean.getLocation_name(),dBean.getDepartment_id());
 	}
 
 	//方法一
@@ -49,16 +61,19 @@ public class DepartmentsDaoImpl extends BaseDao implements DepartmentsDao{
 	public List<DepartmentsBean> queryAllData() throws Exception {
 		List<DepartmentsBean>  allData = new ArrayList<DepartmentsBean>();
 		ResultSet rs = null;
+		rs = executeQuery(" SELECT department_id,department_name,location_name FROM DEPARTMENTS ORDER BY department_id ");
 		
-		rs = executeQuery(" SELECT department_id,department_name,location_name FROM DEPARTMENTS  ");
-		while(rs.next()){
-			DepartmentsBean dBean = new DepartmentsBean();
-			dBean.setDepartment_id(rs.getInt(1));
-			dBean.setDepartment_name(rs.getString(2));
-			dBean.setLocation_name(rs.getString(3));
-			allData.add(dBean);
-		}
-		
+		try {
+			while(rs.next()){
+				DepartmentsBean dBean = new DepartmentsBean();
+				dBean.setDepartment_id(rs.getInt(1));
+				dBean.setDepartment_name(rs.getString(2));
+				dBean.setLocation_name(rs.getString(3));
+				allData.add(dBean);
+			}
+		} finally {
+			closeAll();
+		}	
 		return allData;
 	}
 

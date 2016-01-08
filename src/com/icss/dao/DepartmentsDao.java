@@ -14,7 +14,9 @@ public interface DepartmentsDao {
 	
 	public int delDept(int id) throws Exception;
 	
-	public int updDept(int id) throws Exception;
+	public ResultSet queryDepById(int id) throws Exception;
+	
+	public int updDept(DepartmentsBean dBean) throws Exception;
 	
 	public Vector<Vector<Object>> queryAll() throws Exception;
 	

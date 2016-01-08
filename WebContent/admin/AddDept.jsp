@@ -112,7 +112,7 @@
 	    function checkLoc(){
 	    	var dloc = document.getElementById("location_name").value;
 	    	var locts = document.getElementById("locts");
-	    	if(dloc == "" || dloc == null){
+	    	if(dloc == nulld || loc == ""){
 	    		locts.innerHTML = "地址不能为空！";
 	    		locts.style.color = "red";
 	    		return false;
