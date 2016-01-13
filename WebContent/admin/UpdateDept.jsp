@@ -12,25 +12,8 @@
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="<%=path%>/img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> 
-            <a href="<%=path%>/QueryDeptServlet">部门查询</a> 
-            <a href="JobsViewServlet.jsp">职务查询</a> 
-            <a href="EmpViewServlet.jsp">员工查询</a> 
-            <a href="logout.jsp">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 		<table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">

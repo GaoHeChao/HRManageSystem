@@ -11,7 +11,6 @@ public interface DepartmentsDao {
 
 	public int addDept(DepartmentsBean dBean) throws Exception;
 	
-	
 	public int delDept(int id) throws Exception;
 	
 	public ResultSet queryDepById(int id) throws Exception;

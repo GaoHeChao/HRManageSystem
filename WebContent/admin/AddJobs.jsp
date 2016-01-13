@@ -1,35 +1,24 @@
+<%@page import="com.icss.servlet.AddJobServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% String path = request.getContextPath(); %>
 <html>
 	<head>
 		<title>增加新职务</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	</head>
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="../img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp.html">首页</a> <a href="DeptViewServlet.html">部门查询</a> <a href="JobsViewServlet.html">职务查询</a> <a href="EmpViewServlet.html">员工查询</a> <a href="logout.jsp.html">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 		<table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
 			<tr>
 				<td align="center" valign="top">
-					<form method="post" action="AddJobsServlet">
+					<form method="post" action="" id="form1" name="form1" onsubmit="add()">
 						<table width="500" border="0" cellpadding="5" cellspacing="1"
 							bgcolor="#CCCCCC">
 							<tr>
@@ -42,8 +31,9 @@
 									职务编号
 								</td>
 								<td width="347" height="24" bgcolor="#FFFFFF">
-									<input name="job_id" type="text" id="job_id">
+									<input name="job_id" type="text" id="job_id" onblur="return checkId()">
 									*
+									<span id="idts"></span>
 								</td>
 							</tr>
 							<tr>
@@ -51,8 +41,9 @@
 									职务名称
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									<input name="job_title" type="text" id="job_title">
+									<input name="job_title" type="text" id="job_title" onblur="return checkTitle()">
 									*
+									<span id="titlets"></span>
 								</td>
 							</tr>
 							<tr>
@@ -60,8 +51,9 @@
 									最低工资
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									<input name="min_salary" type="text" id="min_salary">
+									<input name="min_salary" type="text" id="min_salary" onblur="return checkMin()">
 									*
+									<span id="mints"></span>
 								</td>
 							</tr>
 							<tr>
@@ -69,13 +61,14 @@
 									最高工资
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									<input name="max_salary" type="text" id="max_salary">
+									<input name="max_salary" type="text" id="max_salary" onblur="return checkMax()">
 									*
+									<span id="maxts"></span>
 								</td>
 							</tr>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFFFFF">
-									<input type="button" name="Submit" value="提交" onClick="">
+									<input type="submit" name="Submit" value="提交" onClick="">
 									<input type="button" name="Submit2" value="取消"
 										onclick="history.back()">
 								</td>
@@ -88,10 +81,71 @@
 
 <script type="text/javascript">
     function add(){
-    	
+    	if(!checkId()){
+    		return false;
+    	}else if(!checkTitle()){
+    		return false;
+    	}else if(!checkMin()){
+    		return false;
+    	}else if(!checkMax()){
+    		return false;
+    	}else{
+    		var formId = document.getElementById("form1");
+    		formId.action = "<%=path%>/AddJobServlet";
+    		return true;
+    	}
     }
     function checkId(){
-    	
+    	var id = document.getElementById("job_id").value;
+    	var ts = document.getElementById("idts");
+    	if(id == null || id == ""){
+    		ts.innerHTML = "输入错误！";
+    		ts.style.color = "red";
+    		return false;
+    	}else{
+    		ts.innerHTML = "输入正确！";
+    		ts.style.color = "green";
+    		return true;
+    	}
+    }
+    function checkTitle(){
+    	var title = document.getElementById("job_title").value;
+    	var titts = document.getElementById("titlets");
+    	if(title == null || title == ""){
+    		titts.innerHTML = "输入错误！";
+    		titts.style.color = "red";
+    		return false;
+    	}else{
+    		titts.innerHTML = "输入正确！";
+    		titts.style.color = "green";
+    		return true;
+    	}
+    }
+    function checkMin(){
+    	var min = document.getElementById("min_salary").value;
+    	var ts = document.getElementById("mints");
+    	if(min == null || min == ""){
+    		ts.innerHTML = "输入错误！";
+    		ts.style.color = "red";
+    		return false;
+    	}else{
+    		ts.innerHTML = "输入正确！";
+    		ts.style.color = "green";
+    		return true;
+    	}
+    }
+    function checkMax(){
+    	var max = document.getElementById("max_salary").value;
+    	var maxts = document.getElementById("maxts");
+    	if(max == null || max == ""){
+    		maxts.innerHTML = "输入错误！";
+    		maxts.style.color = "red";
+    		return false;
+    	}else{
+    		maxts.innerHTML = "输入正确！";
+    		maxts.style.color = "green";
+    		return true;
+    	}
     }
 </script>
 		<!-- 页面底部 -->

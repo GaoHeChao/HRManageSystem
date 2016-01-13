@@ -27,12 +27,8 @@ public class QueryDeptServlet extends HttpServlet {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext servletContext = this.getServletContext();
-		String encode = servletContext.getInitParameter("encoding");
-		
-		request.setCharacterEncoding(encode);
-		response.setContentType("text/html;charset=utf-8");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		
 		DepartmentsDao dao = DepartmentsFactory.getInstance();
 		/*
@@ -66,7 +62,8 @@ public class QueryDeptServlet extends HttpServlet {
 		
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 
 		doGet(request, response);
 	}

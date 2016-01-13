@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <% String path = request.getContextPath();%>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
@@ -23,7 +24,7 @@
 				if (flag) {
 					location.href = "DelDeptServlet?dept_id=" + department_id;  //URL传参
 				}
-				//解决延迟问题，判断是否成功失败
+				//解决延迟问题，判断是否成功失败???
 				alert("<%=request.getAttribute("mesDept")%>");   
 			}
 			
@@ -32,29 +33,12 @@
 				
 			}
 		</script>
-
 	</head>
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="<%=path%>/img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> 
-            <a href="<%=path%>/QueryDeptServlet">部门查询</a> 
-            <a href="JobsViewServlet.jsp">职务查询</a> 
-            <a href="EmpViewServlet.jsp">员工查询</a> <a href="logout.jsp">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 <table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
@@ -72,60 +56,73 @@
 							<th width="37%" bgcolor="#FFCC00">
 								部门地址
 							</th>
-							<th width="21%" bgcolor="#FFCC00">
-								操作
-							</th>
+							<%--
+							if(session.getAttribute("sname")!=null && 
+							      session.getAttribute("slevel").toString().equals("1")){
+							--%>
+							<c:if test="${sessionScope.slevel == 1 }">
+								<th width="21%" bgcolor="#FFCC00">
+									操作
+								</th>
+							</c:if>
+							<%-- } --%>
 						</tr>
 
 						<!-- 循环输出部门记录 -->
-						<%     
+						<%--     
 						//DepartmentsDao dao = DepartmentsFactory.getInstance();
 					    //List<DepartmentsBean> allData = dao.queryAllData(); 
 					    List<DepartmentsBean> allData =(List<DepartmentsBean>) request.getAttribute("Data"); 
 						Iterator<DepartmentsBean> it = allData.iterator();
 						while (it.hasNext()) {
 						DepartmentsBean bean = it.next();
-						%>
+						--%>
+						<c:forEach items="${requestScope.Data }" var="oneRow" varStatus="vs">
 							<tr>
 								<td bgcolor="#FFFFFF">
-									<%=bean.getDepartment_id() %>
+									${oneRow.department_id }
 								</td>
 								<td bgcolor="#FFFFFF">
-									<%=bean.getDepartment_name() %>
+									<%--=bean.getDepartment_name() --%>
+									${oneRow.department_name }
 								</td>
 								<td bgcolor="#FFFFFF">
-									<%=bean.getLocation_name() %>
+									<%--=bean.getLocation_name() --%>
+									${oneRow.location_name }
 								</td>
+							<%--
+							if(session.getAttribute("sname")!=null && 
+							      session.getAttribute("slevel").toString().equals("1")){
+								
+							--%>
+							<c:if test="${sessionScope.slevel == 1 }">
 								<td bgcolor="#FFFFFF">
-									<a href="javascript:upd(<%=bean.getDepartment_id() %>)">修改</a>
-									<a href="javascript:del(<%=bean.getDepartment_id() %>)">删除</a>								</td>
+									<a href="javascript:upd(${oneRow.department_id })">修改</a>
+									<a href="javascript:del(${oneRow.department_id })">删除</a>	
+								</td>
+							</c:if>
+							<%-- } --%>
 							</tr>
-						<% } %>
+						</c:forEach>
+						<%-- } --%>
 						<!-- 循环输出部门记录结束 -->
 
 					</table>
-					<p>
-						<a href="admin/AddDept.jsp">增加新部门</a>					
-				    </p>
+					<%-- 
+					if(session.getAttribute("sname")!=null && 
+						session.getAttribute("slevel").toString().equals("1")){
+					--%>
+					<c:if test="${sessionScope.slevel == 1 }">
+						<p>
+							<a href="admin/AddDept.jsp">增加新部门</a>					
+					    </p>
+				    </c:if>
+				    <%-- } --%>
 				</td>
 			</tr>
 	</table>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</body>
 </html>

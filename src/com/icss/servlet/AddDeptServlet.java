@@ -25,12 +25,6 @@ public class AddDeptServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		ServletContext servletContext = this.getServletContext();
-		String encode = servletContext.getInitParameter("encoding");
-		
-		request.setCharacterEncoding(encode);
-		response.setContentType("text/html;charset=utf-8");
-		
 		String dnums = request.getParameter("department_id");
 		int dnum = Integer.parseInt(dnums);
 		String dname = request.getParameter("department_name");

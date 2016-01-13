@@ -3,29 +3,27 @@ package com.icss.system;
 import java.util.Iterator;
 import java.util.List;
 
-import com.icss.bean.DepartmentsBean;
-import com.icss.dao.DepartmentsDao;
-import com.icss.dao.DepartmentsFactory;
+import com.icss.bean.JobsBean;
+import com.icss.dao.JobsDao;
+import com.icss.dao.JobsFactory;
 
 public class TestDeptDao {
 
 	public static void main(String[] args) {
-		DepartmentsDao dao = DepartmentsFactory.getInstance();
-		//dao.addDept(dBean);
+		JobsDao dao = JobsFactory.getInstance();
+
+		
 		
 		try {
-			List<DepartmentsBean> allData = dao.queryAllData();
-			Iterator<DepartmentsBean> it = allData.iterator();
-			while (it.hasNext()) {
-				DepartmentsBean bean = it.next();
-				bean.getDepartment_id();
-				bean.getDepartment_name();
-				bean.getLocation_name();
+			List<JobsBean> allJobs = dao.queryAllJobs();
+			Iterator<JobsBean> it = allJobs.iterator();
+			while(it.hasNext()){
+	             JobsBean bean = it.next();
+	             System.out.println(bean.getJob_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 	}
 

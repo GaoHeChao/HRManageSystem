@@ -22,11 +22,6 @@ public class DelDeptServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		ServletContext servletContext = this.getServletContext();
-		String encode = servletContext.getInitParameter("encoding");
-		
-		request.setCharacterEncoding(encode);
-		response.setContentType("text/html;charset=utf-8");
 		
 		String dept_id = request.getParameter("dept_id");
 		int id = Integer.parseInt(dept_id);

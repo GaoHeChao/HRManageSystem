@@ -23,11 +23,6 @@ public class UpdateDeptServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		ServletContext servletContext = this.getServletContext();
-		String encode = servletContext.getInitParameter("encoding");
-		
-		request.setCharacterEncoding(encode);
-		response.setContentType("text/html;charset=utf-8");
 		DepartmentsDao dao = DepartmentsFactory.getInstance();
 		
 		String dNum =request.getParameter("department_id");
@@ -45,13 +40,13 @@ public class UpdateDeptServlet extends HttpServlet {
 			if(rows>0){
 				System.out.println("更新成功！");
 			}else{
-				path = "/admin/UpdateDept.jsp";
+				path = "QueryDeptByIdServlet";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		request.setAttribute("dep_id", dnum);
+		//request.setAttribute("dep_id", dnum);
 		request.setAttribute("ben", bean);
 		
 		//更新失败的两种转法，1、请求转发，2、请求重定向

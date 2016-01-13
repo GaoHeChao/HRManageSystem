@@ -26,12 +26,8 @@ public class QueryDeptByIdServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 
-		ServletContext servletContext = this.getServletContext();
-		String encode = servletContext.getInitParameter("encoding");
-		
-		request.setCharacterEncoding(encode);
-		response.setContentType("text/html;charset=utf-8");
 		DepartmentsDao dao = DepartmentsFactory.getInstance();
+		
 		String dept_id = request.getParameter("dept_id");
 		int id = Integer.parseInt(dept_id);
 
@@ -56,7 +52,6 @@ public class QueryDeptByIdServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

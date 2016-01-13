@@ -1,40 +1,27 @@
+<%@page import="com.icss.bean.JobsBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% String path = request.getContextPath();%>
 <html>
 	<head>
 		<title>修改职务</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	</head>
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="../img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> 
-            <a href="<%=path%>/QueryDeptServlet">部门查询</a> 
-            <a href="JobsViewServlet.html">职务查询</a> 
-            <a href="EmpViewServlet.html">员工查询</a> 
-            <a href="logout.jsp.html">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 		<table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
 			<tr>
 				<td align="center" valign="top">
-					<form method="post" action="UpdateJobsServlet">
+					<form method="post" action="" name="form1" id="form1" onsubmit="return checkForm()">
+					<%
+					JobsBean bean =(JobsBean) request.getAttribute("jbean");
+					%>
 						<table width="500" border="0" cellpadding="5" cellspacing="1"
 							bgcolor="#CCCCCC">
 							<tr>
@@ -48,7 +35,7 @@
 								</td>
 								<td width="347" height="24" bgcolor="#FFFFFF">
 									<input name="job_id" type="text" id="job_id"
-										readonly="readonly" value="WY">
+										readonly="readonly" value="<%=bean.getJob_id()%>">
 									*
 								</td>
 							</tr>
@@ -58,7 +45,7 @@
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
 									<input name="job_title" type="text" id="job_title"
-										value="文员">
+										value="<%=bean.getJob_title()%>">
 									*
 								</td>
 							</tr>
@@ -68,7 +55,7 @@
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
 									<input name="min_salary" type="text" id="min_salary"
-										value="1500">
+										value="<%=bean.getMin_salary() %>">
 									*
 								</td>
 							</tr>
@@ -78,13 +65,13 @@
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
 									<input name="max_salary" type="text" id="max_salary"
-										value="3000">
+										value="<%=bean.getMax_salary() %>">
 									*
 								</td>
 							</tr>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFFFFF">
-									<input type="button" name="Submit" value="更新" onClick="alert('修改职务成功');location.href='JobsViewServlet.html'">
+									<input type="submit" name="Submit" value="更新" onClick="'">
 									<input type="button" name="Submit2" value="取消"
 										onclick="history.back()">
 								</td>
@@ -94,22 +81,13 @@
 				</td>
 			</tr>
 		</table>
+		
+		<!-- 验证修改表单 -->
+		<script type="text/javascript">
+		
+		</script>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+		<jsp:include page="/admin/foot.jsp"></jsp:include>
 	</body>
 </html>

@@ -9,21 +9,8 @@
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="../img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> <a href="DeptViewServlet.jsp">部门查询</a> <a href="JobsViewServlet.html">职务查询</a> <a href="EmpViewServlet.html">员工查询</a> <a href="logout.jsp.html">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 <table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
@@ -112,7 +99,7 @@
 	    function checkLoc(){
 	    	var dloc = document.getElementById("location_name").value;
 	    	var locts = document.getElementById("locts");
-	    	if(dloc == nulld || loc == ""){
+	    	if(dloc == null || dloc == ""){
 	    		locts.innerHTML = "地址不能为空！";
 	    		locts.style.color = "red";
 	    		return false;

@@ -1,45 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <% String path = request.getContextPath();%>
-
+<%@ page import="java.util.Iterator"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.icss.bean.JobsBean" %>
 <html>
 	<head>
 		<title>职务数据</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<script type="text/javascript">
-			//****************-删除确认***************
 			function del(job_id) {
 				//弹出确认框
 				var flag = window.confirm("你确定要删除" + job_id + "号职务吗?");
 								
 				//如果单击确定，则执行DelJobsServlet，并且传入职务编号
 				if (flag) {
-					alert("删除成功");
-					location.href = "JobsViewServlet.html";
+					location.href = "DelJobsServlet?job_id="+job_id;
 				}
+			}
+			
+			function upd(job_id){
+				location.href = "QueryJobsByIdServlet?job_id=" + job_id;
 			}
 		</script>
 	</head>
 
 	<body>
 		<!-- 页面头部 -->
-		<table width="950" border="0" align="center" cellpadding="0"
-	cellspacing="0">
-          <tr>
-            <td height="80" bgcolor="#FFFFFF"><img src="../img/bannal.jpg" width="950"
-				height="80"> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#FFFFFF"><a href="default.jsp">首页</a> <a href="DeptViewServlet.html">部门查询</a> <a href="JobsViewServlet.html">职务查询</a> <a href="EmpViewServlet.html">员工查询</a> <a href="logout.jsp.html">退出登陆</a> </td>
-          </tr>
-          <tr>
-            <td height="24" align="right" bgcolor="#0099CC"> 当前用户：admin 身份：
-              
-              管理员 </td>
-          </tr>
-        </table>
+		<jsp:include page="/admin/header.jsp"></jsp:include>
+		
 		<!-- 页面内容 -->
 		<table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
@@ -60,125 +52,55 @@
 							<th width="24%" height="24" align="center" bgcolor="#FFCC00">
 								最高工资
 							</th>
+							<c:if test="${sessionScope.slevel == 1 }">
 							<th width="16%" height="24" align="center" bgcolor="#FFCC00">
 								操作
 							</th>
+							</c:if>
 						</tr>
 
 						<!-- 显示职务数据 -->
-						
+						<%--
+						List<JobsBean> allJobs = (List<JobsBean>) request.getAttribute("allJobs");
+						Iterator<JobsBean> it = allJobs.iterator();
+						while(it.hasNext()){
+                             JobsBean bean = it.next();
+						--%>
+						<c:forEach items="${requestScope.allJobs }" var="oneJob" varStatus="vs">
 							<tr>
 								<td height="24" bgcolor="#FFFFFF">
-									WY
+									<%--=bean.getJob_id() --%>
+									${oneJob.job_id }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									文员
+									${oneJob.job_title }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									￥1500
+									${oneJob.min_salary }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									￥3000
+									${oneJob.max_salary }
 								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateJobs.jsp.html">修改</a>
-									<a href="javascript:del('WY')">删除</a>								</td>
+							<c:if test="${sessionScope.slevel == 1 }">
+								<td bgcolor="#FFFFFF">
+									<a href="javascript:upd('${oneJob.job_id }')">修改</a>
+									<a href="javascript:del('${oneJob.job_id }')">删除</a>	
+								</td>
+							</c:if>
 							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									FWY
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									服务员
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥800
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥2000
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateJobs.jsp.html">修改</a>
-									<a href="javascript:del('FWY')">删除</a>								</td>
-							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									CHSH
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									厨师
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥1500
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥9999
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateJobs.jsp.html">修改</a>
-									<a href="javascript:del('CHSH')">删除</a>								</td>
-							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									BAN
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									保安
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥800
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥2400
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateJobs.jsp.html">修改</a>
-									<a href="javascript:del('BAN')">删除</a>								</td>
-							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									JL
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									部门经理
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥3000
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									￥9999
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateJobs.jsp.html">修改</a>
-									<a href="javascript:del('JL')">删除</a>								</td>
-							</tr>
-						
+						</c:forEach>
+						<%-- } --%>
 					</table>
+					<c:if test="${sessionScope.slevel == 1 }">
 					<p>
-						<a href="AddJobs.jsp">增加新职务种类</a>					</p>
+						<a href="admin/AddJobs.jsp">增加新职务种类</a>					
+				    </p>
+				    </c:if>
 				</td>
 			</tr>
 		</table>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+        <jsp:include page="foot.jsp"></jsp:include>
 	</body>
 </html>
