@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<% String path = request.getContextPath(); %>
 <html>
 	<head>
 		<title>增加员工</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		
-		<script type="text/javascript" src="../inc/Calendar1.inc"></script>
+		<script type="text/javascript" src="<%=path %>/inc/Calendar1.inc"></script>
 
 		<script type="text/javascript">
 			//显示对应职务的最低和最高工资
@@ -34,7 +35,7 @@
 			align="center">
 			<tr>
 				<td align="center" valign="top">
-					<form name="form1" method="post" action="AddEmpServlet">
+					<form name="form1" id="form1" method="post" action="" onsubmit="return checkForm()">
 						<table width="500" border="0" cellpadding="5" cellspacing="1"
 							bgcolor="#CCCCCC">
 							<tr>
@@ -47,8 +48,9 @@
 									员工姓名
 								</td>
 								<td width="357" height="24" bgcolor="#FFFFFF">
-									<input name="empname" type="text" id="empname">
+									<input name="empname" type="text" id="empname" onblur="return checkName()">
 									*
+									<span id="nts"></span>
 								</td>
 							</tr>
 							<tr>
@@ -82,51 +84,30 @@
 								<td height="24" bgcolor="#FFFFFF">
 									职务
 								</td>
+								
 								<td height="24" bgcolor="#FFFFFF">
+								
 									<select name="job_id" id="job_id" onchange="showSal()">
 										<option value="">
 											请选择职务
 										</option>
-
 										<!-- 循环输出所有的职务option -->
-										
-											<option value="WY">文员</option>
-										
-											<option value="FWY">服务员</option>
-										
-											<option value="CHSH">厨师</option>
-										
-											<option value="BAN">保安</option>
-										
-											<option value="JL">部门经理</option>
-										
-
+										<c:forEach items="${requestScope.jobbean }" var="onejob">
+											<option value="${onejob.job_id }">${onejob.job_title }</option>
+										</c:forEach>
 									</select>
 
 									<!-- 隐藏表单元素：存储每种职务的最低和最高工资 -->
-									
-										<input type="hidden" name="minWY" value="1500"/>
-										<input type="hidden" name="maxWY" value="3000"/>							
-									
-										<input type="hidden" name="minFWY" value="800"/>
-										<input type="hidden" name="maxFWY" value="2000"/>							
-									
-										<input type="hidden" name="minCHSH" value="1500"/>
-										<input type="hidden" name="maxCHSH" value="9999"/>							
-									
-										<input type="hidden" name="minBAN" value="800"/>
-										<input type="hidden" name="maxBAN" value="2400"/>							
-									
-										<input type="hidden" name="minJL" value="3000"/>
-										<input type="hidden" name="maxJL" value="9999"/>							
-									
-
+										<input type="hidden" name="min" value=""/>
+										<input type="hidden" name="max" value=""/>
+																							
 									工资范围
 									<input name="min_salary" type="text" id="min_salary" size="10"
 										readonly>
 									~
 									<input name="max_salary" type="text" id="max_salary" size="10"
 										readonly>
+									
 								</td>
 							</tr>
 							<tr>
@@ -149,21 +130,15 @@
 										</option>
 
 										<!-- 循环输出所有的部门的option -->
-										
-											<option value="10">办公室</option>										
-										
-											<option value="20">客房部</option>										
-										
-											<option value="30">餐饮部</option>										
-										
-											<option value="40">保安部</option>										
-										
+										<c:forEach items="${requestScope.depbean }" var="onedep">
+											<option value="${onedep.department_id }">${onedep.department_name }</option>																			
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFFFFF">
-									<input type="button" name="Submit" value="提交" onClick="alert('增加新员工成功');location.href='EmpViewServlet.html'">
+									<input type="submit" name="Submit" value="提交" onClick="">
 									<input type="button" name="Submit2" value="取消"
 										onclick="history.back()">
 								</td>
@@ -173,22 +148,32 @@
 				</td>
 			</tr>
 		</table>
+		<script type="text/javascript">
+		    function checkForm(){
+		    	if(!checkName()){
+		    		return false;
+		    	}else{
+		    		var formId = document.getElementById("form1");
+			    	formId.action = "AddEmpServlet";
+			    	return true;
+		    	}
+		    }
+		    function checkName(){
+		    	var name = document.getElementById("empname").value;
+		    	var namets = document.getElementById("nts");
+		    	if(name == null || name == ""){
+		    		namets.innerHTML = "不能为空！";
+		    		namets.style.color = "red";
+		    		return false;
+		    	}else{
+		    		namets.innerHTML = "输入正确！";
+		    		namets.style.color = "green";
+		    		return true;
+		    	}
+		    }
+		</script>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</body>
 </html>

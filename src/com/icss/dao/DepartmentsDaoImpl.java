@@ -3,6 +3,7 @@ package com.icss.dao;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.icss.bean.DepartmentsBean;
@@ -75,6 +76,26 @@ public class DepartmentsDaoImpl extends BaseDao implements DepartmentsDao{
 			closeAll();
 		}	
 		return allData;
+	}
+
+	@Override
+	public boolean delDeptByBatch(Object[] paramsList) throws Exception {
+		StringBuilder sql = new StringBuilder()
+				.append(" delete from departments  ")
+				.append(" where department_id=?  ")
+				;
+		return executeUpdateByBatch(sql.toString(), paramsList);
+	}
+
+	/**
+	 * 分页
+	 */
+	@Override
+	public List<Map<String, Object>> queryDeptOnPage( int nowPage,int pageSize) throws Exception {
+		StringBuilder sql = new StringBuilder()
+				.append(" select * from departments ")
+				;
+		return queryOnPage(sql.toString(),nowPage,pageSize);
 	}
 
 }

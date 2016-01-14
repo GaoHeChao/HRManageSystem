@@ -12,11 +12,11 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/*@WebFilter(
+@WebFilter(
 		urlPatterns = { "/*" }, 
 		initParams = { 
 				@WebInitParam(name = "encoding", value = "UTF-8")
-		})*/
+		})
 public class EncodingFilter implements Filter {
     private String encode;
     

@@ -17,9 +17,9 @@
           <tr>
             <td height="24" align="right" bgcolor="#FFFFFF">
             <a href="admin/default.jsp">首页</a> 
-            <a href="<%=path%>/QueryDeptServlet">部门查询</a> 
+            <a href="<%=path%>/QueryDeptOnPageServlet">部门查询</a> 
             <a href="<%=path%>/QueryJobsServlet">职务查询</a> 
-            <a href="EmpViewServlet.jsp">员工查询</a> 
+            <a href="<%=path %>/QueryEmpsServlet">员工查询</a> 
             <a href="<%=path %>/LogoutServlet">退出登陆</a> </td>
           </tr>
           <%

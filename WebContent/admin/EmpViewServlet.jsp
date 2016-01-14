@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <% String path = request.getContextPath();%>
 
 <html>
 	<head>
 		<title>员工数据</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		
 		<script type="text/javascript">
@@ -62,131 +63,41 @@
 								操作
 							</td>
 						</tr>
-						
+						<c:forEach items="${requestScope.allEmp }" var="oneEmp" varStatus="vs">
 							<tr>
 								<td height="24" bgcolor="#FFFFFF">
-									100
+									${oneEmp.employee_id }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									张三
+									${oneEmp.emp_name }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									zhang@163.com
+									${oneEmp.email }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									111.222.333
+									${oneEmp.phone_number }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									2010-02-01
+									${oneEmp.hire_date }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									文员
+									${oneEmp.job_id }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									2000.0
+									${oneEmp.salary }
 								</td>
 								<td height="24" bgcolor="#FFFFFF">
-									办公室
+									${oneEmp.department_id }
 								</td>
+								<c:if test="${sessionScope.slevel == 1 }">
 								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateEmp.jsp.html">修改</a>
-									<a href="javascript:del(100)">删除</a>
-									<a href="PhotoViewServlet.html" target="_blank">照片</a>								</td>
-							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									101
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									李四
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									li@163.com
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									111.111.111
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									2009-06-06
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									服务员
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									1000.0
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									客房部
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateEmp.jsp.html">修改</a>
-									<a href="javascript:del(101)">删除</a>
-									<a href="PhotoViewServlet.html" target="_blank">照片</a>								</td>
-							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									102
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									王五
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									wang@163.com
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									333.333.333
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									2010-02-12
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									服务员
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									1600.0
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									客房部
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateEmp.jsp.html">修改</a>
+									<a href="UpdateEmp.jsp">修改</a>
 									<a href="javascript:del(102)">删除</a>
-									<a href="PhotoViewServlet.html" target="_blank">照片</a>								</td>
+									<a href="PhotoViewServlet.jsp" target="_blank">照片</a>								
+								</td>
+								</c:if>
 							</tr>
-						
-							<tr>
-								<td height="24" bgcolor="#FFFFFF">
-									103
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									赵六
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									zhao@163.com
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									555.555.555
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									2010-02-06
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									厨师
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									4000.0
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									餐饮部
-								</td>
-								<td height="24" bgcolor="#FFFFFF">
-									<a href="UpdateEmp.jsp.html">修改</a>
-									<a href="javascript:del(103)">删除</a>
-									<a href="PhotoViewServlet.html" target="_blank">照片</a>								</td>
-							</tr>
-						
+							</c:forEach>				
 					</table>
 
 					<!-- 分页显示用界面 -->
@@ -207,38 +118,22 @@
 							</td>
 						</tr>
 						<tr>
-							<td height="24" align="center">
-								
-									
-									
-										<font color="red"><b>1</b>
-										</font>
-									
-								
+							<td height="24" align="center">	
+								<font color="red"><b>1</b>
+								</font>
 							</td>
 						</tr>
 					</table>
-					<p>
-						<a href="AddEmp.jsp.html">增加新员工</a>					</p>
+					<c:if test="${sessionScope.slevel == 1 }">
+						<p>
+							<a href="<%=path %>/QueryEmpDataServlet">增加新员工</a>					
+					    </p>
+				    </c:if>
 				</td>
 			</tr>
 		</table>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</body>
 </html>

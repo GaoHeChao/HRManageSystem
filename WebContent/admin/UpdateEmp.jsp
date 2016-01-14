@@ -5,10 +5,10 @@
 <html>
 	<head>
 		<title>修改员工</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="<%=path %>/css/style.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		
-		<script type="text/javascript" src="../inc/Calendar1.inc"></script>
+		<script type="text/javascript" src="<%=path %>/inc/Calendar1.inc"></script>
 
 		<script type="text/javascript">
 	//显示对应职务的最低和最高工资
@@ -94,72 +94,37 @@
 										</option>
 
 										<!-- 循环输出所有的职务option -->
-										
-											
-												<option value="WY" selected>
+										<option value="WY" selected>
 													文员
-												</option>
-											
-											
-										
-											
-											
-												<option value="FWY">
-													服务员
-												</option>
-											
-										
-											
-											
-												<option value="CHSH">
-													厨师
-												</option>
-											
-										
-											
-											
-												<option value="BAN">
-													保安
-												</option>
-											
-										
-											
-											
-												<option value="JL">
-													部门经理
-												</option>
-											
-										
-
+										</option>
 									</select>
 
 									<!-- 隐藏表单元素：存储每种职务的最低和最高工资 -->
 									
 										<input type="hidden" name="minWY"
-											value="1500" />
+											value="" />
 										<input type="hidden" name="maxWY"
-											value="3000" />
+											value="" />
 									
 										<input type="hidden" name="minFWY"
-											value="800" />
+											value="" />
 										<input type="hidden" name="maxFWY"
-											value="2000" />
+											value="" />
 									
 										<input type="hidden" name="minCHSH"
-											value="1500" />
+											value="" />
 										<input type="hidden" name="maxCHSH"
-											value="9999" />
+											value="" />
 									
 										<input type="hidden" name="minBAN"
-											value="800" />
+											value="" />
 										<input type="hidden" name="maxBAN"
-											value="2400" />
+											value="" />
 									
 										<input type="hidden" name="minJL"
-											value="3000" />
+											value="" />
 										<input type="hidden" name="maxJL"
-											value="9999" />
-									
+											value="" />
 
 									工资范围
 									<input name="min_salary" type="text" id="min_salary" size="10"
@@ -189,41 +154,16 @@
 										</option>
 
 										<!-- 循环输出所有的部门的option -->
-										
-											
-												<option value="10" selected>
+										<option value="10" selected>
 													办公室
-												</option>
-											
-											
-										
-											
-											
-												<option value="20">
-													客房部
-												</option>
-											
-										
-											
-											
-												<option value="30">
-													餐饮部
-												</option>
-											
-										
-											
-											
-												<option value="40">
-													保安部
-												</option>
-											
+										</option>
 										
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td height="24" colspan="2" align="center" bgcolor="#FFFFFF">
-									<input type="button" name="Submit" value="更新" onClick="alert('更新员工成功');location.href='EmpViewServlet.html'">
+									<input type="submit" name="Submit" value="更新" onClick="">
 									<input type="button" name="Submit2" value="取消"
 										onclick="history.back()">
 									<input name="employee_id" type="hidden" id="employee_id"
@@ -237,20 +177,6 @@
 		</table>
 
 		<!-- 页面底部 -->
-		
-<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td><hr></td>
-  </tr>
-  <tr>
-    <td align="center">©版权所有</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</body>
 </html>

@@ -16,4 +16,6 @@ public interface JobsDao {
 	public int update(JobsBean jbean) throws Exception;
 	
 	public ResultSet queryJobsById(String id) throws Exception;
+	
+	public boolean deljobByBatch(Object[] paramsList) throws Exception;
 }

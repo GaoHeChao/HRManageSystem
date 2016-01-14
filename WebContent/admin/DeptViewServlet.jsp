@@ -32,6 +32,18 @@
 				location.href = "QueryDeptByIdServlet?dept_id=" + department_id;  //URL传参
 				
 			}
+			
+			function delByBatch(){
+				var flag = window.confirm("你确定要删除号部门吗?");
+				if(flag){
+					document.forms[0].action = "VolumeDelDeptServlet";	
+				}	
+			}
+			
+			function jumpTo(){
+				var pnum = document.getElementById("pnum").value;
+				location.href="QueryDeptOnPageServlet?pagenum=" + pnum;
+			}
 		</script>
 	</head>
 
@@ -40,6 +52,7 @@
 		<jsp:include page="/admin/header.jsp"></jsp:include>
 		
 		<!-- 页面内容 -->
+<form action="" method="post" id="form1" onsubmit="delByBatch()">
 <table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
 			<tr>
@@ -47,13 +60,16 @@
 					<table width="90%" border="0" cellpadding="5" cellspacing="1"
 						bgcolor="#CCCCCC">
 						<tr>
+						    <th width="17%" bgcolor="#FFCC00">
+								批量删除
+							</th>
 							<th width="17%" bgcolor="#FFCC00">
 								部门编号
 							</th>
-							<th width="25%" bgcolor="#FFCC00">
+							<th width="17%" bgcolor="#FFCC00">
 								部门名称
 							</th>
-							<th width="37%" bgcolor="#FFCC00">
+							<th width="21%" bgcolor="#FFCC00">
 								部门地址
 							</th>
 							<%--
@@ -61,7 +77,7 @@
 							      session.getAttribute("slevel").toString().equals("1")){
 							--%>
 							<c:if test="${sessionScope.slevel == 1 }">
-								<th width="21%" bgcolor="#FFCC00">
+								<th width="17%" bgcolor="#FFCC00">
 									操作
 								</th>
 							</c:if>
@@ -79,6 +95,9 @@
 						--%>
 						<c:forEach items="${requestScope.Data }" var="oneRow" varStatus="vs">
 							<tr>
+							    <td bgcolor="#FFFFFF">
+									<input type="checkbox" name="delList" id="" value="${oneRow.department_id }">
+								</td>
 								<td bgcolor="#FFFFFF">
 									${oneRow.department_id }
 								</td>
@@ -106,7 +125,37 @@
 						</c:forEach>
 						<%-- } --%>
 						<!-- 循环输出部门记录结束 -->
-
+                            <tr align="center">
+                               <td colspan="5">
+                               <a href="QueryDeptOnPageServlet?pagenum=1">首页</a>
+                               <a href="QueryDeptOnPageServlet?pagenum=${requestScope.nowPage-1 }">上一页</a>
+                               <span font-color="red">当前页${nowPage }</span>
+                               <a href="QueryDeptOnPageServlet?pagenum=${requestScope.nowPage+1 }">下一页</a>
+                               <a href="QueryDeptOnPageServlet?pagenum=${requestScope.pageCount }">尾页</a>
+                               <a href="">跳转到</a>：<input type="text" size="6" id="pnum" name="">
+                               </td>
+                               
+                            </tr>
+                            <tr align="center">
+                               <td colspan="5">
+                               <c:forEach begin="1" end="${requestScope.pageCount }" var="page">
+                                   <a href="QueryDeptOnPageServlet?pagenum=${page }">${page }</a>
+                               </c:forEach>
+                               </td>
+                            </tr>
+                            <tr align="center">
+                               <td colspan="5">
+                                <c:forEach begin="1" end="5" var="pg">
+									<c:if test="${pg<=requestScope.pageCount }">
+									<a href="QueryDeptOnPageServlet?pagenum=${pg }" >${pg }</a>&nbsp;&nbsp;
+									</c:if>
+								</c:forEach>
+                                <c:if test="${requestScope.pageCount>5 }">
+                                   ...&nbsp;&nbsp;
+                                    <a href="QueryDeptOnPageServlet?pagenum=${pageCount }">${requestScope.pageCount }</a>
+                                </c:if>     
+                               </td>
+                            </tr>
 					</table>
 					<%-- 
 					if(session.getAttribute("sname")!=null && 
@@ -114,14 +163,15 @@
 					--%>
 					<c:if test="${sessionScope.slevel == 1 }">
 						<p>
-							<a href="admin/AddDept.jsp">增加新部门</a>					
+							<a href="admin/AddDept.jsp">增加新部门</a>
+							<input type="submit" value="删除选中部门">				
 					    </p>
 				    </c:if>
 				    <%-- } --%>
 				</td>
 			</tr>
 	</table>
-
+</form>
 		<!-- 页面底部 -->
 		<jsp:include page="foot.jsp"></jsp:include>
 	</body>

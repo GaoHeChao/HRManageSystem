@@ -25,6 +25,13 @@
 			function upd(job_id){
 				location.href = "QueryJobsByIdServlet?job_id=" + job_id;
 			}
+			
+			function delByBatch(){
+				var flag = window.confirm("你确定要删除吗？");
+				if(flag){
+					document.forms[0].action="VolumeDelJobServlet";
+				}
+			}
 		</script>
 	</head>
 
@@ -33,6 +40,7 @@
 		<jsp:include page="/admin/header.jsp"></jsp:include>
 		
 		<!-- 页面内容 -->
+    <form method="post" name="form1" onsubmit="delByBatch()">
 		<table border="0" width="950" height="350" bgcolor="#ffffff"
 			align="center">
 			<tr>
@@ -40,16 +48,19 @@
 					<table width="90%" border="0" cellpadding="5" cellspacing="1"
 						bgcolor="#CCCCCC">
 						<tr>
+						   <th width="7%" height="24" align="center" bgcolor="#FFCC00">
+								职务编号
+							</th>
 							<th width="16%" height="24" align="center" bgcolor="#FFCC00">
 								职务编号
 							</th>
 							<th width="21%" height="24" align="center" bgcolor="#FFCC00">
 								职务名称
 							</th>
-							<th width="23%" height="24" align="center" bgcolor="#FFCC00">
+							<th width="20%" height="24" align="center" bgcolor="#FFCC00">
 								最低工资
 							</th>
-							<th width="24%" height="24" align="center" bgcolor="#FFCC00">
+							<th width="20%" height="24" align="center" bgcolor="#FFCC00">
 								最高工资
 							</th>
 							<c:if test="${sessionScope.slevel == 1 }">
@@ -68,6 +79,9 @@
 						--%>
 						<c:forEach items="${requestScope.allJobs }" var="oneJob" varStatus="vs">
 							<tr>
+							    <td height="24" bgcolor="#FFFFFF">
+									<input type="checkbox" name="delJobs" value="${oneJob.job_id }">
+								</td>
 								<td height="24" bgcolor="#FFFFFF">
 									<%--=bean.getJob_id() --%>
 									${oneJob.job_id }
@@ -93,13 +107,14 @@
 					</table>
 					<c:if test="${sessionScope.slevel == 1 }">
 					<p>
-						<a href="admin/AddJobs.jsp">增加新职务种类</a>					
+						<a href="admin/AddJobs.jsp">增加新职务种类</a>	
+						<input type="submit" value="删除选中职务">				
 				    </p>
 				    </c:if>
 				</td>
 			</tr>
 		</table>
-
+</form>
 		<!-- 页面底部 -->
         <jsp:include page="foot.jsp"></jsp:include>
 	</body>

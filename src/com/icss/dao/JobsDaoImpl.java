@@ -67,5 +67,14 @@ public class JobsDaoImpl extends BaseDao implements JobsDao{
 				;
 		return executeQuery(sql.toString(), id);
 	}
+
+	@Override
+	public boolean deljobByBatch(Object[] paramsList) throws Exception {
+		StringBuilder sql = new StringBuilder()
+				.append(" delete from jobs  ")
+				.append(" where job_id=? ")
+				;
+		return executeUpdateByBatch(sql.toString(),  paramsList);
+	}
 	
 }

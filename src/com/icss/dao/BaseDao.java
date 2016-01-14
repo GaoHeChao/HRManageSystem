@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class BaseDao {
@@ -127,5 +131,146 @@ public class BaseDao {
 		}
 		return obj;
 	}
+	
+	protected List<Map<String, Object>> executeQueryByMap(String sql,Object... param) throws Exception{
+		List<Map<String, Object>> allData = new ArrayList<>();
+		try{
+			conn = getConnection();
+			pstm = conn.prepareStatement(sql.toString());
+			for(int i=0; i<param.length; i++){
+				pstm.setObject(i+1, param[i]);
+			}
+			rs=pstm.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			
+			while(rs.next()){
+				Map<String, Object> item = new HashMap<>();
+				for(int i=0; i<rsmd.getColumnCount(); i++){
+					item.put(rsmd.getColumnName(i+1).toLowerCase(), 
+							rs.getObject(rsmd.getColumnName(i+1)) );
+				}
+				allData.add(item);
+			}
+		}finally{
+			closeAll();
+		}
+		return allData;
+	}
+	
+	protected boolean executeUpdateByBatch(String sql,Object[] paramsList) throws Exception{
+		boolean flag = true;
+		try {
+			conn = getConnection();
+			pstm = conn.prepareStatement(sql);
+			for(int i=0; i<paramsList.length; i++){
+				pstm.setObject(1, paramsList[i]);
+				pstm.addBatch();
+			}
+			conn.setAutoCommit(false);
+			
+			try {
+				pstm.executeBatch();
+				conn.commit();
+				flag = true;
+			} catch (Exception e) {
+			    conn.rollback();
+			    throw e;
+			}finally {
+				conn.setAutoCommit(true);
+			}
+			return flag;
+		} finally {
+			closeAll();
+		}	
+	}
+	
+	
+	
+	/**
+	 * 分页----------------------------------------------------------------------
+	 */
+	private int rowCount;
+	private int pageSize = 10;
+	private int nowPage;
+	private int pageCount;
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public int getNowPage() {
+		return nowPage;
+	}
+
+	public int getPageCount() {
+		return pageCount;
+	}
+	
+	public List<Map<String, Object>> queryOnPage(String sql, int nowPage,int pageSize, Object...param)
+	      throws Exception{
+		List<Map<String, Object>> allData = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			pstm = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			for(int i=0; i<param.length; i++){
+				pstm.setObject(i+1, param[i]);
+			}
+			rs = pstm.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			
+			rs.last();
+			rowCount = rs.getRow();
+			if(pageSize>0){
+				this.pageSize = pageSize;
+			}
+			
+			if(rowCount % this.pageSize == 0){
+				pageCount = rowCount/this.pageSize;
+			}else{
+				pageCount = rowCount/this.pageSize+1;
+			}
+			
+			//pageCount = (rowCount-1)/pageSize + 1;    //最优算法
+			
+			if(nowPage<1){
+				this.nowPage = 1;
+			}else if(nowPage>pageCount){
+				this.nowPage = pageCount;
+			}else{
+				this.nowPage = nowPage;
+			}
+			
+			if(nowPage == 1){
+				rs.beforeFirst();
+			}else{
+				rs.absolute((this.nowPage-1)*pageSize);
+			}
+			
+			for(int count=0; count<pageSize; count++){
+				if(rs.next()){
+					Map<String, Object> item = new HashMap<>();
+					
+					for(int i=0; i<rsmd.getColumnCount(); i++){
+						item.put(rsmd.getColumnName(i+1).toLowerCase(), rs.getObject(rsmd.getColumnName(i+1)));
+					}
+					allData.add(item);
+					
+					
+				}else{
+					break;
+				}
+			}
+	
+		} finally {
+			closeAll();
+		}
+		
+		return allData;
+	}
+		
 	
 }
