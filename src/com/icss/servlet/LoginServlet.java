@@ -42,8 +42,8 @@ public class LoginServlet extends HttpServlet {
 			if(rs != null && rs.next() && admincode.equals(randcode)){  //对ResultSet判空不熟悉
 				Cookie name = new Cookie("name", adminname);
 				Cookie level = new Cookie("level", adminlevel);
-				name.setMaxAge(60*60*7);
-				level.setMaxAge(60*60*7);
+				name.setMaxAge(60*60*24*7);
+				level.setMaxAge(60*60*24*7);
 				
 				response.addCookie(name);
 				response.addCookie(level);
